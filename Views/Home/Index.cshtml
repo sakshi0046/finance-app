@@ -1,0 +1,335 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --success-color: #38b000;
+            --warning-color: #ffbe0b;
+            --info-color: #00b4d8;
+            --secondary-color: #6c757d;
+            --text-color: #2b2d42;
+            --background-color: #f8f9fa;
+            --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            height: 70dvh;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-title {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #3a86ff, #38b000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.25rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .dashboard-card:hover::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.9) 100%);
+        }
+
+        .dashboard-card__link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            color: inherit;
+            text-decoration: none;
+            height: 100%;
+        }
+
+        .dashboard-card__icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            transition: transform var(--transition-speed);
+        }
+
+        .dashboard-card:hover .dashboard-card__icon {
+            transform: scale(1.2);
+        }
+
+        .dashboard-card__title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .dashboard-card__description {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .dashboard-card--accounts {
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .dashboard-card--transactions {
+            border-top: 4px solid var(--success-color);
+        }
+
+        .dashboard-card--categories {
+            border-top: 4px solid var(--warning-color);
+        }
+
+        .dashboard-card--reports {
+            border-top: 4px solid var(--info-color);
+        }
+
+        .dashboard-card--users {
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        /* Animation for the cards on page load */
+        @@keyframes fadeInUp {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .dashboard-card {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+            .dashboard-card:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+
+            .dashboard-card:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .dashboard-card:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            .dashboard-card:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+
+            .dashboard-card:nth-child(5) {
+                animation-delay: 0.5s;
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+        .dashboard-cards
+        {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1rem;
+        }
+
+        }
+    </style>
+}
+
+<div class="dashboard-container p-5">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Welcome to FinancialApp</h1>
+        <p class="dashboard-subtitle">Your personal finance management solution. Use the options below to track and manage your finances effectively.</p>
+    </div>
+
+    <div class="dashboard-cards">
+        <div class="dashboard-card dashboard-card--accounts">
+            <a class="dashboard-card__link" asp-controller="Account" asp-action="Index">
+                <div class="dashboard-card__icon">💼</div>
+                <h2 class="dashboard-card__title">Accounts</h2>
+                <p class="dashboard-card__description">Manage your bank accounts, credit cards, and investments</p>
+            </a>
+        </div>
+
+        <div class="dashboard-card dashboard-card--transactions">
+            <a class="dashboard-card__link" asp-controller="Transaction" asp-action="Index">
+                <div class="dashboard-card__icon">💰</div>
+                <h2 class="dashboard-card__title">Transactions</h2>
+                <p class="dashboard-card__description">Track income and expenses with detailed transaction history</p>
+            </a>
+        </div>
+
+        <div class="dashboard-card dashboard-card--categories">
+            <a class="dashboard-card__link" asp-controller="Category" asp-action="Index">
+                <div class="dashboard-card__icon">🏷️</div>
+                <h2 class="dashboard-card__title">Categories</h2>
+                <p class="dashboard-card__description">Organize transactions with custom categories and tags</p>
+            </a>
+        </div>
+
+        <div class="dashboard-card dashboard-card--reports">
+            <a class="dashboard-card__link" asp-controller="Report" asp-action="MonthlySummary">
+                <div class="dashboard-card__icon">📊</div>
+                <h2 class="dashboard-card__title">Reports</h2>
+                <p class="dashboard-card__description">Visualize spending patterns and financial insights</p>
+            </a>
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="dashboard-card dashboard-card--users">
+                <a class="dashboard-card__link" asp-controller="User" asp-action="Index">
+                    <div class="dashboard-card__icon">👥</div>
+                    <h2 class="dashboard-card__title">User Management</h2>
+                    <p class="dashboard-card__description">Administer user accounts and permissions</p>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add a slight delay effect when hovering out
+            const cards = document.querySelectorAll('.dashboard-card');
+
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transition = 'transform 0.5s ease-out, box-shadow 0.5s ease-out';
+                });
+            });
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to FinancialApp</h1>
+    <p class="lead">Use the links below to manage your finances.</p>
+
+    <div class="mt-4">
+        <a class="btn btn-primary m-2" asp-controller="Account" asp-action="Index">💼 Accounts</a>
+        <a class="btn btn-success m-2" asp-controller="Transaction" asp-action="Index">💰 Transactions</a>
+        <a class="btn btn-warning m-2" asp-controller="Category" asp-action="Index">🏷️ Categories</a>
+        <a class="btn btn-info m-2" asp-controller="Report" asp-action="MonthlySummary">📊 Reports</a>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-secondary m-2" asp-controller="User" asp-action="Index">👥 User Management</a>
+        }
+
+    </div>
+</div>
+ *@

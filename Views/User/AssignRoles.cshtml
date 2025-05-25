@@ -1,0 +1,254 @@
+﻿@model FinancialApp.Models.User
+@{
+    ViewData["Title"] = "Assign Role";
+}
+
+<div class="role-assignment-container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="title">Assign Role</h2>
+            <p class="subtitle">User: <span class="username">@Model.Username</span></p>
+        </div>
+        <div class="card-body">
+            <form asp-action="AssignRoles" method="post" class="role-form">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="form-group">
+                    <label for="role" class="form-label">Select Role</label>
+                    <div class="select-container">
+                        <select name="role" id="role" class="form-select">
+                            <option value="User" selected="@(Model.Role == "User")">User</option>
+                            <option value="Admin" selected="@(Model.Role == "Admin")">Admin</option>
+                        </select>
+                        <div class="select-arrow"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <span class="btn-text">Update Role</span>
+                        <span class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #6366f1;
+        --primary-hover: #4f46e5;
+        --secondary-color: #f3f4f6;
+        --text-color: #1f2937;
+        --light-text: #4b5563;
+        --border-color: #e5e7eb;
+        --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition: all 0.3s ease;
+    }
+
+    .role-assignment-container {
+        display: flex;
+        justify-content: center;
+        padding: 2rem 1rem;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 480px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transform: translateY(0);
+        transition: var(--transition);
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+    .card-header {
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+        color: white;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.025em;
+    }
+
+    .subtitle {
+        margin: 0.5rem 0 0;
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    .username {
+        font-weight: 600;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 2px;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .role-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--light-text);
+        margin-bottom: 0.25rem;
+    }
+
+    .select-container {
+        position: relative;
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: white;
+        appearance: none;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+    .select-arrow {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid var(--light-text);
+        pointer-events: none;
+        transition: var(--transition);
+    }
+
+    .select-container:hover .select-arrow {
+        border-top-color: var(--primary-color);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    .btn-submit {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease-out, height 0.4s ease-out;
+            z-index: 0;
+        }
+
+        .btn-submit:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+    .btn-text, .btn-icon {
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-icon {
+        display: flex;
+        align-items: center;
+        transform: translateX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .btn-submit:hover .btn-icon {
+        transform: translateX(4px);
+    }
+
+    @@media (max-width: 640px) {
+        .card
+
+    {
+        border-radius: 8px;
+    }
+
+    .card-header {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    }
+</style>

@@ -1,0 +1,427 @@
+﻿@model IEnumerable<FinancialApp.Models.Account>
+@{
+    ViewData["Title"] = "Account Balance Overview";
+}
+
+<style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: #f1f5f9;
+            color: var(--dark-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 5vh auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dashboard-title {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+            position: relative;
+        }
+
+            .dashboard-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -10px;
+                height: 4px;
+                width: 60px;
+                background: var(--primary-color);
+                border-radius: 2px;
+            }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .card:hover {
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-5px);
+            }
+
+        .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .accounts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .accounts-table th {
+                background-color: #f8fafc;
+                color: #64748b;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.05em;
+                padding: 1rem 1.5rem;
+                text-align: left;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .accounts-table td {
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid #e2e8f0;
+                font-size: 0.875rem;
+                color: #334155;
+            }
+
+            .accounts-table tr {
+                transition: all 0.2s ease;
+            }
+
+                .accounts-table tr:hover {
+                    background-color: #f1f5f9;
+                    transform: scale(1.01);
+                }
+
+                .accounts-table tr:last-child td {
+                    border-bottom: none;
+                }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .account-name {
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+        }
+
+        .account-icon {
+            margin-right: 0.75rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+        }
+
+        .balance {
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .balance-positive {
+            color: var(--success-color);
+        }
+
+        .balance-negative {
+            color: var(--danger-color);
+        }
+
+        .balance-zero {
+            color: var(--warning-color);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+            .summary-card:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-3px);
+            }
+
+        .summary-card-title {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .summary-card-positive .summary-card-value {
+            color: var(--success-color);
+        }
+
+        .summary-card-negative .summary-card-value {
+            color: var(--danger-color);
+        }
+
+        /* Account type badges */
+        .account-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .account-type-checking {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .account-type-savings {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .account-type-credit {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .account-type-investment {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Animations */
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .animation-delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .animation-delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .animation-delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .dashboard-container
+
+        {
+            padding: 1rem;
+        }
+
+        .summary-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .accounts-table th,
+        .accounts-table td {
+            padding: 0.75rem;
+        }
+
+        }
+
+        @@media (max-width: 640px) {
+            .summary-cards
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .accounts-table {
+            display: block;
+            overflow-x: auto;
+        }
+
+        }
+    </style>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Balance Overview</h1>
+            <div id="current-date"></div>
+        </div>
+
+        <div class="summary-cards fade-in">
+            <div class="summary-card summary-card-positive">
+                <div class="summary-card-title">Total Balance</div>
+                <div class="summary-card-value" id="total-balance">$0.00</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-title">Total Accounts</div>
+                <div class="summary-card-value" id="total-accounts">0</div>
+            </div>
+            <div class="summary-card summary-card-positive">
+                <div class="summary-card-title">Highest Balance</div>
+                <div class="summary-card-value" id="highest-balance">$0.00</div>
+            </div>
+            <div class="summary-card summary-card-negative">
+                <div class="summary-card-title">Lowest Balance</div>
+                <div class="summary-card-value" id="lowest-balance">$0.00</div>
+            </div>
+        </div>
+
+        <div class="card fade-in animation-delay-1">
+            <div class="card-header">
+                <h2 class="card-title">Account Balances</h2>
+                <div class="card-subtitle">Overview of all your financial accounts</div>
+            </div>
+            <table class="accounts-table">
+                <thead>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Account Type</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var account in Model)
+                    {
+                        var balanceClass = account.Balance > 0 ? "balance-positive" : (account.Balance < 0 ? "balance-negative" : "balance-zero");
+                        var typeClass = $"account-type-{account.AccountType.ToLower()}";
+
+                        <tr class="account-row fade-in animation-delay-2">
+                            <td>
+                            <span class="account-type-badge @typeClass">@account.AccountName</span>
+                            </td>
+                            <td>
+                                <span class="account-type-badge @typeClass">@account.AccountType</span>
+                            </td>
+                            <td>
+                                <span class="balance @balanceClass">$@account.Balance.ToString("F2")</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+
+            // Calculate summary statistics
+            const balances = Array.from(document.querySelectorAll('.balance')).map(el => {
+                return parseFloat(el.textContent.replace('$', ''));
+            });
+
+            const totalBalance = balances.reduce((sum, balance) => sum + balance, 0);
+            const highestBalance = Math.max(...balances);
+            const lowestBalance = Math.min(...balances);
+            const totalAccounts = balances.length;
+
+            // Update summary cards
+            document.getElementById('total-balance').textContent = '$' + totalBalance.toFixed(2);
+            document.getElementById('highest-balance').textContent = '$' + highestBalance.toFixed(2);
+            document.getElementById('lowest-balance').textContent = '$' + lowestBalance.toFixed(2);
+            document.getElementById('total-accounts').textContent = totalAccounts;
+
+            // Add hover animation for table rows
+            const rows = document.querySelectorAll('.account-row');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = 'var(--shadow-md)';
+                    this.style.zIndex = '10';
+                });
+
+                row.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                    this.style.zIndex = '1';
+                });
+            });
+        });
+
+        // Helper function for account icons (this will be rendered server-side in reality)
+        function GetAccountIcon(accountType) {
+            switch(accountType.toLowerCase()) {
+                case 'checking':
+                    return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#3b82f6" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/><path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/></svg>';
+                case 'savings':
+                    return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#10b981" viewBox="0 0 16 16"><path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/></svg>';
+                case 'credit':
+                    return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ef4444" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/><path d="M3 14h8v-1H3v1z"/></svg>';
+                case 'investment':
+                    return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f59e0b" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z"/></svg>';
+                default:
+                    return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#64748b" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>';
+            }
+        }
+    </script>

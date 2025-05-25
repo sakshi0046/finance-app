@@ -1,0 +1,190 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\views\\user\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:views\\user\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\views\\report\\balanceoverview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:views\\report\\balanceoverview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\views\\report\\monthlysummary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:views\\report\\monthlysummary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\controllers\\transactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:controllers\\transactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\views\\user\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:views\\user\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|c:\\users\\dutta\\source\\repos\\financialapp\\views\\user\\assignroles.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9D91704-F17D-41A2-8D81-B9031DEB24E3}|FinancialApp.csproj|solutionrelative:views\\user\\assignroles.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 267,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\User\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\User\\Create.cshtml",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\User\\Create.cshtml",
+              "RelativeToolTip": "Views\\User\\Create.cshtml",
+              "ViewState": "AgIAAIYBAAAAAAAAAAAtwJQBAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T14:18:06.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Account.cs",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Models\\Account.cs",
+              "RelativeDocumentMoniker": "Models\\Account.cs",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Models\\Account.cs",
+              "RelativeToolTip": "Models\\Account.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T14:04:30.956Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T12:41:07.845Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TransactionsController.cs",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Controllers\\TransactionsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TransactionsController.cs",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Controllers\\TransactionsController.cs",
+              "RelativeToolTip": "Controllers\\TransactionsController.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAiwFAAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T12:35:46.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Controllers\\UserController.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAxwF8AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T11:56:21.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\User\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\User\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\User\\Edit.cshtml",
+              "RelativeToolTip": "Views\\User\\Edit.cshtml",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAJEAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T11:56:12.727Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MonthlySummary.cshtml",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\Report\\MonthlySummary.cshtml",
+              "RelativeDocumentMoniker": "Views\\Report\\MonthlySummary.cshtml",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\Report\\MonthlySummary.cshtml",
+              "RelativeToolTip": "Views\\Report\\MonthlySummary.cshtml",
+              "ViewState": "AgIAANQBAAAAAAAAAAAQwKwBAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T09:51:37.189Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BalanceOverview.cshtml",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\Report\\BalanceOverview.cshtml",
+              "RelativeDocumentMoniker": "Views\\Report\\BalanceOverview.cshtml",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\Report\\BalanceOverview.cshtml",
+              "RelativeToolTip": "Views\\Report\\BalanceOverview.cshtml",
+              "ViewState": "AgIAAFABAAAAAAAAAAAAAGYBAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T09:25:41.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AssignRoles.cshtml",
+              "DocumentMoniker": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\User\\AssignRoles.cshtml",
+              "RelativeDocumentMoniker": "Views\\User\\AssignRoles.cshtml",
+              "ToolTip": "C:\\Users\\dutta\\source\\repos\\FinancialApp\\Views\\User\\AssignRoles.cshtml",
+              "RelativeToolTip": "Views\\User\\AssignRoles.cshtml",
+              "ViewState": "AgIAANsAAAAAAAAAAAAwwOkAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-08T22:21:56.33Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 23,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

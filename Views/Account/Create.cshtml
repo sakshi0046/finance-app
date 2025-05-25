@@ -1,0 +1,429 @@
+﻿@model FinancialApp.Models.Account
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="account-create-container">
+    <div class="card account-card">
+        <div class="card-header">
+            <h2 class="card-title">Create Account</h2>
+            <p class="card-subtitle">Set up a new financial account</p>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="form-group floating-label">
+                    <input asp-for="AccountName" class="form-control input-premium" id="accountName" placeholder=" " required />
+                    <label asp-for="AccountName" class="form-label" for="accountName"></label>
+                    <span asp-validation-for="AccountName" class="text-danger validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AccountType" class="form-label select-label"></label>
+                    <div class="custom-select-wrapper">
+                        <select asp-for="AccountType" class="form-control input-premium" id="accountType">
+                            <option>Wallet</option>
+                            <option>Bank</option>
+                        </select>
+                        <div class="select-arrow">
+                            <i class="bi bi-chevron-down"></i>
+                        </div>
+                    </div>
+                    <span asp-validation-for="AccountType" class="text-danger validation-message"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-create">
+                        <span class="btn-text">Create Account</span>
+                        <i class="bi bi-plus-circle"></i>
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-cancel">
+                        <span class="btn-text">Cancel</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        /* Modern Premium Styling */
+        :root {
+            --primary-color: #4285f4;
+            --primary-dark: #3367d6;
+            --primary-light: #a7c0f4;
+            --secondary-color: #34a853;
+            --danger-color: #ea4335;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --gray-color: #70757a;
+            --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        .account-create-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .account-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+            .account-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: none;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .card-subtitle {
+            opacity: 0.8;
+            font-weight: 300;
+            margin-bottom: 0;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--gray-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .input-premium {
+            height: 54px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all var(--transition-speed);
+            width: 100%;
+            background-color: #fff;
+        }
+
+            .input-premium:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.25);
+                outline: none;
+            }
+
+        /* Floating Label Animation */
+        .floating-label {
+            position: relative;
+        }
+
+            .floating-label input {
+                padding: 1.25rem 1rem 0.5rem;
+            }
+
+            .floating-label label {
+                position: absolute;
+                top: 50%;
+                left: 1rem;
+                transform: translateY(-50%);
+                transition: all var(--transition-speed);
+                pointer-events: none;
+                margin: 0;
+            }
+
+            .floating-label input:focus ~ label,
+            .floating-label input:not(:placeholder-shown) ~ label {
+                top: 30%;
+                font-size: 0.8rem;
+                color: var(--primary-color);
+            }
+
+        /* Custom Select Styling */
+        .custom-select-wrapper {
+            position: relative;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            transition: transform var(--transition-speed);
+        }
+
+        .custom-select-wrapper:hover .select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        select.input-premium {
+            appearance: none;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+            select.input-premium:focus + .select-arrow i {
+                color: var(--primary-color);
+            }
+
+        /* Button Styling */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all var(--transition-speed);
+            height: 54px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            flex: 1;
+        }
+
+            .btn-primary:hover {
+                background-color: var(--primary-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+            }
+
+        .btn-outline-secondary {
+            border: 1px solid #e0e0e0;
+            background-color: transparent;
+            color: var(--gray-color);
+        }
+
+            .btn-outline-secondary:hover {
+                background-color: #f0f0f0;
+                color: var(--dark-color);
+            }
+
+        .btn i {
+            margin-left: 0.5rem;
+            transition: transform var(--transition-speed);
+        }
+
+        .btn-primary:hover i {
+            transform: rotate(90deg);
+        }
+
+        /* Hover and Focus Effects */
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn-primary:hover:before {
+            left: 100%;
+        }
+
+        /* Validation Styling */
+        .validation-message {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .input-premium.is-invalid {
+            border-color: var(--danger-color);
+        }
+
+            .input-premium.is-invalid:focus {
+                box-shadow: 0 0 0 3px rgba(234, 67, 53, 0.25);
+            }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 576px) {
+            .form-actions
+
+        {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Add animation and interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form validation
+            const form = document.querySelector('form');
+            const inputs = form.querySelectorAll('input, select');
+
+            inputs.forEach(input => {
+                // Add animation class when input receives focus
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('input-focused');
+                });
+
+                // Remove animation class when input loses focus
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('input-focused');
+
+                    // Simple validation on blur
+                    if (this.value.trim() === '' && this.hasAttribute('required')) {
+                        this.classList.add('is-invalid');
+                    } else {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+
+                // Add animation when input changes
+                input.addEventListener('input', function() {
+                    if (this.value.trim() !== '') {
+                        this.classList.add('has-content');
+                    } else {
+                        this.classList.remove('has-content');
+                    }
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('.btn');
+
+            buttons.forEach(button => {
+                button.addEventListener('mousedown', function(e) {
+                    const x = e.clientX - this.getBoundingClientRect().left;
+                    const y = e.clientY - this.getBoundingClientRect().top;
+
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+
+                inputs.forEach(input => {
+                    if (input.hasAttribute('required') && input.value.trim() === '') {
+                        input.classList.add('is-invalid');
+                        valid = false;
+                    }
+                });
+
+                if (!valid) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model FinancialApp.Models.Account
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<h2>Create Account</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken() <!-- Add this line -->
+
+    <div class="mb-3">
+        <label asp-for="AccountName" class="form-label"></label>
+        <input asp-for="AccountName" class="form-control" />
+        <span asp-validation-for="AccountName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="AccountType" class="form-label"></label>
+        <select asp-for="AccountType" class="form-control">
+            <option>Wallet</option>
+            <option>Bank</option>
+        </select>
+        <span asp-validation-for="AccountType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+ *@

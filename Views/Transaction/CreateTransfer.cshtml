@@ -1,0 +1,524 @@
+﻿@{
+    ViewData["Title"] = "Transfer Funds";
+}
+
+<div class="transfer-container">
+    <div class="transfer-card">
+        <div class="transfer-header">
+            <h2>Transfer Funds</h2>
+            <div class="transfer-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+        </div>
+
+        <form asp-action="CreateTransfer" method="post" class="transfer-form">
+            @* Show server-side validation errors *@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert-container">
+                    <div class="alert alert-danger">
+                        <div class="alert-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div class="alert-content">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <div>@error.ErrorMessage</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-container">
+                <div class="form-group">
+                    <div class="accounts-selection">
+                        <div class="account-field from-account">
+                            <label for="fromAccountId">From Account</label>
+                            <div class="select-wrapper">
+                                <select name="fromAccountId" id="fromAccountId" class="form-control" asp-items="ViewBag.Accounts">
+                                    <option value="">-- Select an account --</option>
+                                </select>
+                                <div class="select-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transfer-direction">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <polyline points="19 12 12 19 5 12"></polyline>
+                            </svg>
+                        </div>
+
+                        <div class="account-field to-account">
+                            <label for="toAccountId">To Account</label>
+                            <div class="select-wrapper">
+                                <select name="toAccountId" id="toAccountId" class="form-control" asp-items="ViewBag.Accounts">
+                                    <option value="">-- Select an account --</option>
+                                </select>
+                                <div class="select-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group amount-group">
+                    <label for="amount">Amount</label>
+                    <div class="input-wrapper">
+                        <div class="currency-symbol">$</div>
+                        <input type="number" step="0.01" name="amount" id="amount" class="form-control" placeholder="0.00" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description <span class="optional">(optional)</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" name="description" id="description" class="form-control" placeholder="What's this transfer for?" />
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="21" y1="10" x2="3" y2="10"></line>
+                                <line x1="21" y1="6" x2="3" y2="6"></line>
+                                <line x1="21" y1="14" x2="3" y2="14"></line>
+                                <line x1="21" y1="18" x2="3" y2="18"></line>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary btn-transfer">
+                    <span class="btn-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </span>
+                    <span class="btn-text">Complete Transfer</span>
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <span class="btn-text">Cancel</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #3f51b5;
+        --primary-color-hover: #303f9f;
+        --secondary-color: #f5f5f5;
+        --border-color: #e0e0e0;
+        --text-color: #333;
+        --light-text: #666;
+        --danger-color: #f44336;
+        --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        --transition-time: 0.3s;
+    }
+
+    .transfer-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        color: var(--text-color);
+    }
+
+    .transfer-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: transform var(--transition-time), box-shadow var(--transition-time);
+    }
+
+        .transfer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+    .transfer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        background: linear-gradient(to right, #3f51b5, #5c6bc0);
+        color: white;
+    }
+
+        .transfer-header h2 {
+            margin: 0;
+            font-weight: 500;
+            font-size: 1.5rem;
+        }
+
+    .transfer-icon {
+        background: rgba(255, 255, 255, 0.2);
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .transfer-form {
+        padding: 2rem;
+    }
+
+    .form-container {
+        margin-bottom: 2rem;
+    }
+
+    .accounts-selection {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .account-field {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .transfer-direction {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
+        margin-top: 1.5rem;
+        color: var(--primary-color);
+    }
+
+    @@media (max-width: 768px) {
+        .accounts-selection
+
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .transfer-direction {
+        transform: rotate(90deg);
+        margin: 0.5rem 0;
+    }
+
+    .account-field {
+        width: 100%;
+    }
+
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+    .optional {
+        font-weight: normal;
+        color: var(--light-text);
+        font-size: 0.85em;
+    }
+
+    .select-wrapper, .input-wrapper {
+        position: relative;
+    }
+
+    .select-icon, .input-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--light-text);
+        pointer-events: none;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: white;
+        transition: border-color var(--transition-time), box-shadow var(--transition-time);
+    }
+
+    select.form-control {
+        appearance: none;
+        padding-right: 2.5rem;
+        cursor: pointer;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);
+    }
+
+    .amount-group .input-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .currency-symbol {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--light-text);
+        font-weight: 500;
+    }
+
+    #amount {
+        padding-left: 1.75rem;
+    }
+
+    .alert-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .alert {
+        display: flex;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #ffebee;
+        border: 1px solid rgba(244, 67, 54, 0.2);
+    }
+
+    .alert-danger {
+        color: var(--danger-color);
+    }
+
+    .alert-icon {
+        margin-right: 0.75rem;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .alert-content {
+        flex: 1;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color var(--transition-time), transform var(--transition-time);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        min-width: 180px;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color-hover);
+        }
+
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: var(--text-color);
+    }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+    .btn-icon {
+        margin-right: 0.5rem;
+    }
+
+    /* Animation Effects */
+    .form-control, .btn {
+        transform-origin: center;
+        transition: all var(--transition-time) ease;
+    }
+
+        .form-control:hover {
+            border-color: var(--primary-color);
+        }
+
+    .btn-primary {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn-primary:hover::after {
+            animation: ripple 1s ease-out;
+        }
+
+    @@keyframes ripple {
+        0%
+
+    {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fromSelect = document.getElementById("fromAccountId");
+            const toSelect = document.getElementById("toAccountId");
+
+            // Add animation class
+            const addAnimationClass = (element) => {
+                element.classList.add('pulse-animation');
+                setTimeout(() => {
+                    element.classList.remove('pulse-animation');
+                }, 700);
+            };
+
+            // Ripple effect for buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (!this.classList.contains('btn-secondary')) {
+                        const x = e.clientX - e.target.getBoundingClientRect().left;
+                        const y = e.clientY - e.target.getBoundingClientRect().top;
+                    }
+                });
+            });
+
+            // Update dropdown function - prevent selecting same account
+            function updateToDropdown() {
+                const selectedFrom = fromSelect.value;
+                Array.from(toSelect.options).forEach(option => {
+                    if (option.value && option.value === selectedFrom) {
+                        option.disabled = true;
+                        option.hidden = true;
+                    } else {
+                        option.disabled = false;
+                        option.hidden = false;
+                    }
+                });
+
+                // Add visual feedback
+                if (selectedFrom) {
+                    document.querySelector('.transfer-direction svg').style.color = '#3f51b5';
+                    document.querySelector('.transfer-direction').classList.add('active');
+                } else {
+                    document.querySelector('.transfer-direction svg').style.color = '';
+                    document.querySelector('.transfer-direction').classList.remove('active');
+                }
+            }
+
+            // Format amount with commas
+            const amountInput = document.getElementById('amount');
+            amountInput.addEventListener('input', function() {
+                // Only handle formatting when leaving the field to avoid cursor position issues
+                this.value = this.value.replace(/[^\d.]/g, '');
+            });
+
+            // Validate form before submission
+            const transferForm = document.querySelector('.transfer-form');
+            transferForm.addEventListener('submit', function(e) {
+                let isValid = true;
+                const fromValue = fromSelect.value;
+                const toValue = toSelect.value;
+                const amountValue = amountInput.value;
+
+                if (!fromValue) {
+                    addAnimationClass(fromSelect.parentElement);
+                    isValid = false;
+                }
+
+                if (!toValue) {
+                    addAnimationClass(toSelect.parentElement);
+                    isValid = false;
+                }
+
+                if (!amountValue || parseFloat(amountValue) <= 0) {
+                    addAnimationClass(amountInput.parentElement);
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+
+            fromSelect.addEventListener("change", function() {
+                updateToDropdown();
+                if (this.value) {
+                    addAnimationClass(document.querySelector('.transfer-direction'));
+                }
+            });
+
+            toSelect.addEventListener("change", function() {
+                if (this.value && fromSelect.value) {
+                    addAnimationClass(document.querySelector('.btn-transfer'));
+                }
+            });
+
+            // Run once in case of retained form values
+            updateToDropdown();
+        });
+    </script>
+}

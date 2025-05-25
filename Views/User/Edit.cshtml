@@ -1,0 +1,362 @@
+﻿@model FinancialApp.Models.User
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="user-edit-container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="title">Edit User</h2>
+            <div class="animated-underline"></div>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="premium-form">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Username" />
+
+                <div class="form-group">
+                    <div class="input-container">
+                        <input asp-for="Email" class="form-control" required />
+                        <label asp-for="Email" class="floating-label"></label>
+                        <div class="input-focus-effect"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="select-container">
+                        <select asp-for="Role" class="form-control">
+                            <option>User</option>
+                            <option>Admin</option>
+                        </select>
+                        <label asp-for="Role" class="floating-label"></label>
+                        <div class="select-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-premium">
+                        <span class="btn-text">Save Changes</span>
+                        <span class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern Premium Styling */
+    :root {
+        --primary-color: #4f46e5;
+        --primary-light: #6366f1;
+        --primary-dark: #4338ca;
+        --secondary-color: #0ea5e9;
+        --text-color: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --animation-speed: 0.2s;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.5;
+    }
+
+    .user-edit-container {
+        max-width: 600px;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        transition: transform var(--animation-speed), box-shadow var(--animation-speed);
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+    .card-header {
+        padding: 1.5rem 2rem;
+        position: relative;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin: 0;
+        display: inline-block;
+    }
+
+    .animated-underline {
+        height: 3px;
+        width: 50px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        margin-top: 0.5rem;
+        border-radius: 3px;
+        transition: width 0.3s ease;
+    }
+
+    .card:hover .animated-underline {
+        width: 100px;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .premium-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        position: relative;
+    }
+
+    .input-container, .select-container {
+        position: relative;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: transparent;
+        transition: border-color var(--animation-speed), box-shadow var(--animation-speed);
+        appearance: none;
+        outline: none;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+    .floating-label {
+        position: absolute;
+        top: 0.75rem;
+        left: 1rem;
+        color: var(--text-light);
+        transition: all var(--animation-speed) ease;
+        pointer-events: none;
+    }
+
+    .form-control:focus ~ .floating-label,
+    .form-control:not(:placeholder-shown) ~ .floating-label {
+        top: -0.5rem;
+        left: 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        background-color: var(--card-bg);
+        padding: 0 0.25rem;
+    }
+
+    .input-focus-effect {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .form-control:focus ~ .input-focus-effect {
+        width: 100%;
+        left: 0;
+    }
+
+    /* Select Styling */
+    .select-container select {
+        padding-right: 2.5rem;
+        cursor: pointer;
+    }
+
+    .select-arrow {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: var(--text-light);
+        transition: color var(--animation-speed);
+    }
+
+    .select-container:hover .select-arrow {
+        color: var(--primary-color);
+    }
+
+    /* Button Styling */
+    .form-actions {
+        margin-top: 1rem;
+    }
+
+    .btn-premium {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--animation-speed);
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+        .btn-premium:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-premium:hover:before {
+            left: 0;
+        }
+
+        .btn-premium:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .btn-premium:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+    .btn-icon {
+        display: inline-flex;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .btn-premium:hover .btn-icon {
+        opacity: 1;
+        transform: translateX(5px);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 640px) {
+        .user-edit-container
+
+    {
+        margin: 1.5rem auto;
+        padding: 0 1rem;
+    }
+
+    .card-header, .card-body {
+        padding: 1.25rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add 'loaded' class for potential entry animations
+        document.querySelector('.user-edit-container').classList.add('loaded');
+
+        // Initialize form controls with proper classes
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            // For inputs that already have values (like in edit mode)
+            if (input.value) {
+                input.classList.add('has-value');
+            }
+
+            // Listen for changes
+            input.addEventListener('input', function() {
+                if (this.value) {
+                    this.classList.add('has-value');
+                } else {
+                    this.classList.remove('has-value');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model FinancialApp.Models.User
+@{
+    ViewData["Title"] = "Edit User";
+}
+<h2>Edit User</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="Role"></label>
+        <select asp-for="Role">
+            <option>User</option>
+            <option>Admin</option>
+        </select>
+    </div>
+    <button type="submit">Save Changes</button>
+</form>
+ *@

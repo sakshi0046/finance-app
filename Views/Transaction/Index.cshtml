@@ -1,0 +1,675 @@
+﻿@model IEnumerable<FinancialApp.Models.Transaction>
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<div class="finance-dashboard">
+    <!-- Top section with summary and actions -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1>Transactions</h1>
+            <div class="account-filter">
+                <div class="custom-select">
+                    <select id="accountFilter" onchange="this.form.submit()">
+                        <option value="">All Accounts</option>
+                        @if (ViewBag.Accounts is SelectList accountsList)
+                        {
+                            foreach (var acc in accountsList)
+                            {
+                                <option value="@acc.Value">@acc.Text</option>
+                            }
+                        }
+                    </select>
+                    <form method="get" asp-action="Index" id="filterForm">
+                        <input type="hidden" id="accountId" name="accountId" value="" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="transaction-actions">
+            <a asp-action="CreateDeposit" class="action-button deposit-action">
+                <span class="icon">+</span>
+                <span>Deposit</span>
+            </a>
+            <a asp-action="CreateWithdrawal" class="action-button withdraw-action">
+                <span class="icon">−</span>
+                <span>Withdraw</span>
+            </a>
+            <a asp-action="CreateTransfer" class="action-button transfer-action">
+                <span class="icon">↔</span>
+                <span>Transfer</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main content area -->
+    <div class="transactions-wrapper">
+        <div class="transactions-container">
+            @if (!Model.Any())
+            {
+                <div class="no-transactions">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" class="empty-icon">
+                            <path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                        <p>No transactions to display</p>
+                        <small>Start adding transactions using the buttons above</small>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var txn in Model)
+                {
+                    <div class="transaction-item @txn.Type.ToString().ToLower()">
+                        <div class="transaction-icon">
+                            @if (txn.Type == "Deposit")
+                            {
+                                <svg viewBox="0 0 24 24" class="deposit-icon"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+                            }
+                            else if (txn.Type == "Withdrawal")
+                            {
+                                <svg viewBox="0 0 24 24" class="withdraw-icon"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
+                            }
+                            else
+                            {
+                                <svg viewBox="0 0 24 24" class="transfer-icon"><path d="M7 16l-4-4 4-4M17 8l4 4-4 4M3 12h18"></path></svg>
+                            }
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-main">
+                                <div class="transaction-info">
+                                    <h3 class="transaction-account">@txn.Account?.AccountName</h3>
+                                    <p class="transaction-desc">@txn.Description</p>
+                                </div>
+                                <div class="transaction-amount @(txn.Type == "Deposit" ? "positive" : txn.Type == "Withdrawal" ? "negative" : "neutral")">
+                                    @txn.Amount.ToString("C")
+                                </div>
+                            </div>
+                            <div class="transaction-meta">
+                                <div class="transaction-date">
+                                    <svg viewBox="0 0 24 24" class="date-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    @txn.CreatedAt.ToLocalTime().ToString("MMM dd, yyyy • h:mm tt")
+                                </div>
+                                <div class="transaction-labels">
+                                    <span class="category-label">@txn.Category?.Name</span>
+                                    <span class="type-label @txn.Type.ToString().ToLower()">@txn.Type</span>
+                                </div>
+                                <div class="actions">
+                                    <a asp-action="Details" asp-route-id="@txn.Id" class="details-link">
+                                        <svg viewBox="0 0 24 24" class="details-icon"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Base styles and variables */
+    :root {
+        --bg-color: #f5f7fa;
+        --card-bg: #ffffff;
+        --text-primary: #2d3748;
+        --text-secondary: #718096;
+        --text-muted: #a0aec0;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.03);
+        --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.06);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Transaction type colors */
+        --deposit-color: #10b981;
+        --withdrawal-color: #ef4444;
+        --transfer-color: #6366f1;
+        /* Button colors */
+        --deposit-btn: #ecfdf5;
+        --deposit-btn-text: #065f46;
+        --withdrawal-btn: #fef2f2;
+        --withdrawal-btn-text: #991b1b;
+        --transfer-btn: #eef2ff;
+        --transfer-btn-text: #4338ca;
+        /* Font settings */
+        --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Dashboard layout */
+    .finance-dashboard {
+        max-width: 1100px;
+        margin-top: 5vh;
+        padding: 32px 16px;
+    }
+
+    /* Header area */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+    }
+
+    @@media (max-width: 768px) {
+        .dashboard-header
+
+    {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+    }
+
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    @@media (max-width: 768px) {
+        .header-content
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    }
+
+    .header-content h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+        background: linear-gradient(120deg, #2563eb, #4f46e5);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Custom select styling */
+    .account-filter {
+        position: relative;
+    }
+
+    .custom-select {
+        position: relative;
+    }
+
+        .custom-select select {
+            appearance: none;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 40px 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 220px;
+            box-shadow: var(--shadow-sm);
+        }
+
+            .custom-select select:focus {
+                outline: none;
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            }
+
+        .custom-select::after {
+            content: '';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232d3748'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+        }
+
+    /* Transaction action buttons */
+    .transaction-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    @@media (max-width: 640px) {
+        .transaction-actions
+
+    {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    }
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+    }
+
+        .action-button .icon {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+    .deposit-action {
+        background-color: var(--deposit-btn);
+        color: var(--deposit-btn-text);
+    }
+
+    .withdraw-action {
+        background-color: var(--withdrawal-btn);
+        color: var(--withdrawal-btn-text);
+    }
+
+    .transfer-action {
+        background-color: var(--transfer-btn);
+        color: var(--transfer-btn-text);
+    }
+
+    .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Transactions container */
+    .transactions-wrapper {
+        position: relative;
+        min-height: 200px;
+    }
+
+    .transactions-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* Empty state styling */
+    .no-transactions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        text-align: center;
+        color: var(--text-secondary);
+    }
+
+    .empty-state .empty-icon {
+        width: 64px;
+        height: 64px;
+        stroke: currentColor;
+        stroke-width: 1.5px;
+        fill: none;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .empty-state small {
+        font-size: 14px;
+        opacity: 0.7;
+    }
+
+    /* Transaction item styling */
+    .transaction-item {
+        display: flex;
+        align-items: stretch;
+        background-color: var(--card-bg);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid transparent;
+    }
+
+        .transaction-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .transaction-item.deposit {
+            border-left-color: var(--deposit-color);
+        }
+
+        .transaction-item.withdrawal {
+            border-left-color: var(--withdrawal-color);
+        }
+
+        .transaction-item.transfer {
+            border-left-color: var(--transfer-color);
+        }
+
+    .transaction-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        padding: 0 16px;
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+        .transaction-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+            stroke: currentColor;
+            fill: none;
+        }
+
+    .deposit-icon {
+        color: var(--deposit-color);
+    }
+
+    .withdraw-icon {
+        color: var(--withdrawal-color);
+    }
+
+    .transfer-icon {
+        color: var(--transfer-color);
+    }
+
+    .transaction-details {
+        flex: 1;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .transaction-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .transaction-info {
+        flex: 1;
+        min-width: 0; /* Allows text truncation */
+    }
+
+    .transaction-account {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        color: var(--text-primary);
+    }
+
+    .transaction-desc {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 4px 0 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 400px;
+    }
+
+    .transaction-amount {
+        font-size: 18px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .transaction-amount.positive {
+            color: var(--deposit-color);
+        }
+
+        .transaction-amount.negative {
+            color: var(--withdrawal-color);
+        }
+
+        .transaction-amount.neutral {
+            color: var(--transfer-color);
+        }
+
+    .transaction-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border-color);
+        padding-top: 12px;
+    }
+
+    .transaction-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .date-icon {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        stroke-width: 1.5px;
+        fill: none;
+    }
+
+    .transaction-labels {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .category-label {
+        background-color: #f3f4f6;
+        padding: 4px 8px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .type-label {
+        padding: 4px 8px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 500;
+        color: white;
+    }
+
+        .type-label.deposit {
+            background-color: var(--deposit-color);
+        }
+
+        .type-label.withdrawal {
+            background-color: var(--withdrawal-color);
+        }
+
+        .type-label.transfer {
+            background-color: var(--transfer-color);
+        }
+
+    .actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .details-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        color: var(--text-secondary);
+        transition: var(--transition);
+    }
+
+        .details-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
+        }
+
+    .details-icon {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 640px) {
+        .transaction-item
+
+    {
+        flex-direction: column;
+        border-left: none;
+        border-top: 4px solid transparent;
+    }
+
+    .transaction-icon {
+        width: 100%;
+        height: 48px;
+        padding: 12px 0;
+    }
+
+    .transaction-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .transaction-labels {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    }
+
+    /* Smooth loading animation */
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .transaction-item {
+        animation: fadeInUp 0.4s ease-out forwards;
+        opacity: 0;
+    }
+
+        .transaction-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .transaction-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .transaction-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .transaction-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .transaction-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .transaction-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .transaction-item:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .transaction-item:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        .transaction-item:nth-child(9) {
+            animation-delay: 0.9s;
+        }
+
+        .transaction-item:nth-child(10) {
+            animation-delay: 1s;
+        }
+</style>
+
+<script>
+    // JavaScript for dynamic account filter
+    document.addEventListener('DOMContentLoaded', function() {
+        const accountFilter = document.getElementById('accountFilter');
+        const accountIdInput = document.getElementById('accountId');
+        const filterForm = document.getElementById('filterForm');
+
+        accountFilter.addEventListener('change', function() {
+            accountIdInput.value = this.value;
+            filterForm.submit();
+        });
+
+        // Apply smooth hover effects
+        const transactionItems = document.querySelectorAll('.transaction-item');
+        transactionItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = 'var(--shadow-lg)';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = 'var(--shadow-sm)';
+            });
+        });
+    });
+</script>

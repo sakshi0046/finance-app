@@ -1,0 +1,32 @@
+﻿@model FinancialApp.Models.Transaction
+
+<h2>Edit Transaction</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label asp-for="Type"></label>
+        <select asp-for="Type">
+            <option>Deposit</option>
+            <option>Withdrawal</option>
+            <option>Transfer</option>
+        </select>
+    </div>
+    <div>
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount" />
+    </div>
+    <div>
+        <label asp-for="AccountId">Account</label>
+        <select asp-for="AccountId" asp-items="ViewBag.Accounts"></select>
+    </div>
+    <div>
+        <label asp-for="CategoryId">Category</label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories"></select>
+    </div>
+    <div>
+        <label asp-for="Description"></label>
+        <input asp-for="Description" />
+    </div>
+    <button type="submit">Save</button>
+</form>

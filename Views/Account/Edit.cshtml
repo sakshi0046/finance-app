@@ -1,0 +1,469 @@
+﻿@model FinancialApp.Models.Account
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<div class="edit-account-container">
+    <div class="edit-card">
+        <div class="card-header">
+            <h2 class="title">Edit Account</h2>
+            <div class="shape-divider"></div>
+        </div>
+
+        <form asp-action="Edit" method="post" class="animated-form">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <div class="input-container">
+                    <input asp-for="AccountName" class="form-input" required autocomplete="off" />
+                    <label asp-for="AccountName" class="float-label"></label>
+                    <div class="input-underline"></div>
+                </div>
+                <span asp-validation-for="AccountName" class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="select-container">
+                    <select asp-for="AccountType" class="form-select">
+                        <option selected>@Model.AccountType</option>
+                        <option>Wallet</option>
+                        <option>Bank</option>
+                    </select>
+                    <label asp-for="AccountType" class="float-label"></label>
+                    <div class="select-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <span asp-validation-for="AccountType" class="validation-message"></span>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary">
+                    <span>Update</span>
+                    <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <span>Cancel</span>
+                    <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Base Styles and Variables */
+    :root {
+        --primary-color: #6366f1;
+        --primary-hover: #4f46e5;
+        --secondary-color: #64748b;
+        --secondary-hover: #475569;
+        --surface-color: #ffffff;
+        --background-color: #f8fafc;
+        --text-color: #1e293b;
+        --label-color: #64748b;
+        --border-color: #e2e8f0;
+        --error-color: #ef4444;
+        --transition-speed: 0.3s;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        --radius: 0.5rem;
+        --radius-lg: 1rem;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    /* Container Styling */
+    .edit-account-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 2rem;
+    }
+
+    .edit-card {
+        width: 100%;
+        max-width: 540px;
+        background-color: var(--surface-color);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        will-change: transform, box-shadow;
+    }
+
+        .edit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+
+    .card-header {
+        position: relative;
+        padding: 2.5rem 2rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary-color), #818cf8);
+        color: white;
+    }
+
+    .title {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.75rem;
+        letter-spacing: -0.5px;
+    }
+
+    .shape-divider {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background-color: var(--surface-color);
+        clip-path: polygon(0 100%, 100% 100%, 100% 0);
+        transform: translateY(50%);
+    }
+
+    /* Form Styling */
+    .animated-form {
+        padding: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.75rem;
+    }
+
+    .input-container, .select-container {
+        position: relative;
+        margin-bottom: 0.25rem;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        padding: 0.75rem 0;
+        font-size: 1rem;
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid var(--border-color);
+        color: var(--text-color);
+        transition: border-color var(--transition-speed);
+        outline: none;
+    }
+
+    .form-select {
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 2rem;
+    }
+
+    .float-label {
+        position: absolute;
+        left: 0;
+        top: 0.75rem;
+        color: var(--label-color);
+        pointer-events: none;
+        transform-origin: left top;
+        transition: transform var(--transition-speed), color var(--transition-speed);
+    }
+
+    .form-input:focus ~ .float-label,
+    .form-input:not(:placeholder-shown) ~ .float-label,
+    .form-select:focus ~ .float-label,
+    .form-select:not([value=""]) ~ .float-label {
+        transform: translateY(-1.5rem) scale(0.85);
+        color: var(--primary-color);
+    }
+
+    .input-underline {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        width: 0;
+        background-color: var(--primary-color);
+        transition: width var(--transition-speed);
+    }
+
+    .form-input:focus ~ .input-underline,
+    .form-select:focus ~ .input-underline {
+        width: 100%;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+        border-color: var(--primary-color);
+    }
+
+    .select-arrow {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: var(--label-color);
+        transition: color var(--transition-speed);
+    }
+
+    .form-select:focus ~ .select-arrow {
+        color: var(--primary-color);
+    }
+
+    .validation-message {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+        color: var(--error-color);
+        opacity: 0;
+        transform: translateY(-5px);
+        transition: opacity var(--transition-speed), transform var(--transition-speed);
+    }
+
+    .input-validation-error ~ .validation-message {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .input-validation-error,
+    .input-validation-error ~ .input-underline {
+        border-color: var(--error-color) !important;
+        background-color: var(--error-color) !important;
+    }
+
+    /* Button Styling */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        transition: transform var(--transition-speed), background-color var(--transition-speed), box-shadow var(--transition-speed);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .btn:active::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            transition: 0s;
+        }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        box-shadow: var(--shadow-sm);
+    }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: white;
+        box-shadow: var(--shadow-sm);
+    }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background-color: var(--secondary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+    .btn-icon {
+        width: 18px;
+        height: 18px;
+        transition: transform var(--transition-speed);
+    }
+
+    .btn:hover .btn-icon {
+        transform: translateX(3px);
+    }
+
+    /* Animation Keyframes */
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .form-group {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+        .form-group:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+    .action-buttons {
+        animation: fadeIn 0.5s ease-out forwards;
+        animation-delay: 0.3s;
+        opacity: 0;
+    }
+
+    /* Media Queries */
+    @@media (max-width: 640px) {
+        .edit-card
+
+    {
+        max-width: 100%;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation class to form elements
+        const formElements = document.querySelectorAll('.form-input, .form-select, .btn');
+        formElements.forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            element.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+
+        // Enhance form validation visual feedback
+        const inputs = document.querySelectorAll('.form-input, .form-select');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                this.classList.add('input-validation-error');
+            });
+
+            input.addEventListener('input', function() {
+                if (this.validity.valid) {
+                    this.classList.remove('input-validation-error');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model FinancialApp.Models.Account
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<h2>Edit Account</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="AccountName" class="form-label"></label>
+        <input asp-for="AccountName" class="form-control" />
+        <span asp-validation-for="AccountName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="AccountType" class="form-label"></label>
+        <select asp-for="AccountType" class="form-control">
+            <option selected>@Model.AccountType</option>
+            <option>Wallet</option>
+            <option>Bank</option>
+        </select>
+        <span asp-validation-for="AccountType" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+ *@

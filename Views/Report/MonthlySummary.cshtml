@@ -1,0 +1,487 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Monthly Summary";
+    var summary = Model;
+    var transactions = (List<FinancialApp.Models.Transaction>)ViewBag.Transactions;
+}
+
+<!-- Add required CSS libraries -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* Base styles and variables */
+    :root {
+        --primary-color: #6366f1;
+        --primary-hover: #4f46e5;
+        --secondary-color: #10b981;
+        --secondary-hover: #059669;
+        --light-bg: #f9fafb;
+        --dark-text: #1f2937;
+        --medium-text: #4b5563;
+        --light-text: #9ca3af;
+        --border-color: #e5e7eb;
+        --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition-normal: all 0.3s ease;
+    }
+
+    body {
+        color: var(--dark-text);
+        background-color: #f3f4f6;
+    }
+
+    /* Page header */
+    .page-header {
+        background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
+        color: white;
+        border-radius: 0.75rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .page-header h1 {
+            font-weight: 700;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+    /* Filter form */
+    .filter-form {
+        background-color: white;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        justify-content: space-between;
+        transition: var(--transition-normal);
+    }
+
+        .filter-form:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--medium-text);
+            margin-bottom: 0;
+            display: flex;
+			gap: 0.5rem;
+			align-items: center;
+        }
+
+    .form-select {
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        background-color: white;
+        color: var(--dark-text);
+        transition: var(--transition-normal);
+        min-width: 140px;
+    }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: var(--transition-normal);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+    .btn-success {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+        .btn-success:hover {
+            background-color: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+
+    .btn i {
+        font-size: 1rem;
+    }
+
+    /* Summary cards */
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .summary-card {
+        background-color: white;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .summary-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            transition: var(--transition-normal);
+        }
+
+        .summary-card.deposits::after {
+            background-color: #10b981;
+        }
+
+        .summary-card.withdrawals::after {
+            background-color: #ef4444;
+        }
+
+        .summary-card.net::after {
+            background-color: #6366f1;
+        }
+
+        .summary-card:hover::after {
+            height: 6px;
+        }
+
+    .summary-card-title {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--medium-text);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .summary-card-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--dark-text);
+        margin: 0;
+    }
+
+    /* Transactions table */
+    .transactions-card {
+        background-color: white;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition-normal);
+    }
+
+        .transactions-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+    .transactions-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .transactions-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+    .transactions-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .transactions-table th {
+            background-color: var(--light-bg);
+            color: var(--medium-text);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .transactions-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--dark-text);
+            transition: var(--transition-normal);
+        }
+
+        .transactions-table tr {
+            transition: var(--transition-normal);
+        }
+
+            .transactions-table tr:hover {
+                background-color: var(--light-bg);
+            }
+
+                .transactions-table tr:hover td {
+                    color: var(--primary-color);
+                }
+
+    .transaction-amount {
+        font-weight: 600;
+    }
+
+        .transaction-amount.positive {
+            color: #10b981;
+        }
+
+        .transaction-amount.negative {
+            color: #ef4444;
+        }
+
+    .transaction-type {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+        .transaction-type.deposit {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .transaction-type.withdrawal {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .filter-form
+
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-select {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    }
+</style>
+
+<div class="page-header animate__animated animate__fadeIn">
+    <h1>
+        <i class="fas fa-calendar-alt mr-2"></i>
+        Monthly Summary: @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(summary.Month) @summary.Year
+    </h1>
+</div>
+
+<form method="get" asp-controller="Report" asp-action="MonthlySummary" class="filter-form animate__animated animate__fadeInUp">
+    <div class="form-group">
+        <label for="month"><i class="fas fa-calendar-day"></i> Month:</label>
+        <select name="month" class="form-select" id="month">
+            @for (int m = 1; m <= 12; m++)
+            {
+                <option value="@m" selected="@(m == summary.Month ? "selected" : null)">
+                    @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="year"><i class="fas fa-calendar-alt"></i> Year:</label>
+        <select name="year" class="form-select" id="year">
+            @for (int y = DateTime.Now.Year - 5; y <= DateTime.Now.Year; y++)
+            {
+                <option value="@y" selected="@(y == summary.Year ? "selected" : null)">@y</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-filter"></i> Filter
+    </button>
+
+    <a asp-controller="Report" asp-action="ExportMonthlySummary"
+       asp-route-year="@summary.Year" asp-route-month="@summary.Month"
+       class="btn btn-success ml-auto">
+        <i class="fas fa-file-export"></i> Export CSV
+    </a>
+</form>
+
+<div class="summary-cards animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+    <div class="summary-card deposits">
+        <div class="summary-card-title">
+            <i class="fas fa-arrow-circle-down"></i> Total Deposits
+        </div>
+        <div class="summary-card-value">@summary.TotalDeposits.ToString("C")</div>
+    </div>
+
+    <div class="summary-card withdrawals">
+        <div class="summary-card-title">
+            <i class="fas fa-arrow-circle-up"></i> Total Withdrawals
+        </div>
+        <div class="summary-card-value">@summary.TotalWithdrawals.ToString("C")</div>
+    </div>
+
+    <div class="summary-card net">
+        <div class="summary-card-title">
+            <i class="fas fa-balance-scale"></i> Net Change
+        </div>
+        <div class="summary-card-value">@summary.NetChange.ToString("C")</div>
+    </div>
+</div>
+
+<div class="transactions-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+    <div class="transactions-header">
+        <i class="fas fa-exchange-alt"></i>
+        <h3>Transactions</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="transactions-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Account</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tx in transactions)
+                {
+                    <tr class="animate__animated animate__fadeIn" style="animation-delay: @(0.05 * (transactions.IndexOf(tx) % 10))s;">
+                        <td>
+                            <i class="far fa-calendar mr-2"></i>
+                            @tx.CreatedAt.ToShortDateString()
+                        </td>
+                        <td>
+                            <i class="fas fa-university mr-2"></i>
+                            @(tx.Account?.AccountName ?? "N/A")
+                        </td>
+                        <td>
+                            <span class="transaction-type @(tx.Type.ToString().ToLower())">
+                                @tx.Type
+                            </span>
+                        </td>
+                        <td>
+                            <span class="transaction-amount @(tx.Amount >= 0 ? "positive" : "negative")">
+                                @tx.Amount.ToString("C")
+                            </span>
+                        </td>
+                        <td>
+                            <i class="fas fa-comment-alt mr-2"></i>
+                            @tx.Description
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add required JavaScript libraries and custom scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add animation when scrolling to elements
+        function animateOnScroll() {
+            $('.animate__animated:not(.animate__animated--visible)').each(function() {
+                var elementTop = $(this).offset().top;
+                var elementVisible = 150;
+                var windowHeight = $(window).height();
+                var scrollTop = $(window).scrollTop();
+
+                if (elementTop < (windowHeight + scrollTop - elementVisible)) {
+                    $(this).addClass('animate__animated--visible');
+                }
+            });
+        }
+
+        // Run on page load
+        animateOnScroll();
+
+        // Run on scroll
+        $(window).scroll(function() {
+            animateOnScroll();
+        });
+
+        // Add hover effect to the table rows with animation
+        $('.transactions-table tr').hover(
+            function() {
+                $(this).find('td').css('transform', 'translateX(5px)');
+            },
+            function() {
+                $(this).find('td').css('transform', 'translateX(0)');
+            }
+        );
+    });
+</script>

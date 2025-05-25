@@ -1,0 +1,505 @@
+﻿@model FinancialApp.Models.Transaction
+@{
+    ViewData["Title"] = "New Withdrawal";
+}
+
+<div class="withdrawal-container">
+    <div class="withdrawal-card">
+        <div class="card-header">
+            <h2 class="mb-0">New Withdrawal</h2>
+            <div class="header-icon">
+                <i class="fas fa-arrow-down"></i>
+            </div>
+        </div>
+
+        <form asp-action="CreateWithdrawal" method="post" class="withdrawal-form">
+            <div class="form-row">
+                <div class="input-group">
+                    <label asp-for="AccountId">Account</label>
+                    <div class="custom-select-wrapper">
+                        <select asp-for="AccountId" class="custom-select" asp-items="ViewBag.AccountId"></select>
+                        <div class="select-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <span asp-validation-for="AccountId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label asp-for="Amount">Amount</label>
+                    <div class="amount-input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input asp-for="Amount" class="form-input" placeholder="0.00" />
+                    </div>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label asp-for="Description">Description</label>
+                    <input asp-for="Description" class="form-input" placeholder="What is this withdrawal for?" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label asp-for="CategoryId">Category</label>
+                    <div class="custom-select-wrapper">
+                        <select asp-for="CategoryId" class="custom-select" asp-items="ViewBag.CategoryId">
+                            <option value="">-- None --</option>
+                        </select>
+                        <div class="select-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-withdraw">
+                    <span class="btn-icon"><i class="fas fa-money-bill-wave"></i></span>
+                    <span class="btn-text">Withdraw</span>
+                </button>
+                <a asp-action="Index" class="btn-cancel">
+                    <span class="btn-text">Cancel</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --input-border: #cbd5e1;
+            --input-focus: rgba(99, 102, 241, 0.2);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-input: 0 2px 4px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+            --input-radius: 10px;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .withdrawal-container {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .withdrawal-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+            .withdrawal-card:hover {
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-2px);
+            }
+
+        .card-header {
+            background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            color: white;
+            padding: 24px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .card-header h2 {
+                font-weight: 600;
+                font-size: 1.5rem;
+                margin: 0;
+            }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .withdrawal-form {
+            padding: 30px;
+        }
+
+        .form-row {
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+            .input-group label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: 600;
+                color: var(--text-color);
+                font-size: 0.9rem;
+                letter-spacing: 0.01em;
+            }
+
+        .form-input,
+        .custom-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--input-border);
+            border-radius: var(--input-radius);
+            background-color: #fff;
+            font-size: 1rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            outline: none;
+            box-shadow: var(--shadow-input);
+            height: 56px;
+        }
+
+            .form-input:focus,
+            .custom-select:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px var(--input-focus);
+                background-color: #fafbff;
+            }
+
+            .form-input::placeholder {
+                color: var(--text-light);
+            }
+
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+            transition: var(--transition);
+            background-color: #f1f5f9;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-select:focus + .select-icon {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .custom-select {
+            appearance: none;
+            padding-right: 40px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+            .custom-select:hover {
+                border-color: var(--text-light);
+            }
+
+                .custom-select:hover + .select-icon {
+                    color: var(--text-color);
+                }
+
+        .amount-input-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .amount-input-wrapper input {
+            padding-left: 30px;
+            text-align: left;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .text-danger {
+            color: var(--danger-color);
+            font-size: 0.75rem;
+            margin-top: 8px;
+            display: block;
+            font-weight: 500;
+            padding-left: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .btn-withdraw,
+        .btn-cancel {
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-withdraw {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            flex: 1;
+        }
+
+            .btn-withdraw:hover, .btn-withdraw:focus {
+                background-color: var(--danger-hover);
+                transform: translateY(-1px);
+            }
+
+        .btn-cancel {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+            .btn-cancel:hover, .btn-cancel:focus {
+                background-color: var(--background-color);
+                border-color: var(--text-light);
+            }
+
+        /* Animations */
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .withdrawal-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .input-group {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .input-group::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: var(--primary-color);
+                transition: var(--transition);
+            }
+
+            .input-group:focus-within::after {
+                width: 100%;
+            }
+
+        .form-input:focus + .input-focus,
+        .custom-select:focus + .select-icon {
+            color: var(--primary-color);
+        }
+
+        .btn-withdraw .btn-icon {
+            transition: var(--transition);
+        }
+
+        .btn-withdraw:hover .btn-icon {
+            transform: translateX(-4px);
+        }
+
+        @@media (max-width: 640px) {
+            .withdrawal-card
+
+        {
+            margin: 0 -20px;
+            border-radius: 0;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add focus animations
+            const formInputs = document.querySelectorAll('.form-input, .custom-select');
+
+            formInputs.forEach(input => {
+                // Add animation class with staggered delay
+                setTimeout(() => {
+                    input.parentElement.parentElement.style.animation = `fadeIn 0.4s ease forwards`;
+                }, Array.from(formInputs).indexOf(input) * 100);
+
+                // Add floating label effect
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+
+                    // Add subtle animation to input container
+                    if (this.classList.contains('custom-select')) {
+                        this.parentElement.style.transform = 'translateY(-2px)';
+                    } else {
+                        this.style.transform = 'translateY(-2px)';
+                    }
+                });
+
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.parentElement.classList.remove('focused');
+                    }
+
+                    // Reset animation
+                    if (this.classList.contains('custom-select')) {
+                        this.parentElement.style.transform = 'translateY(0)';
+                    } else {
+                        this.style.transform = 'translateY(0)';
+                    }
+                });
+
+                // Initialize any inputs with values
+                if (input.value) {
+                    input.parentElement.classList.add('focused');
+                }
+            });
+
+            // Custom hover effect for withdrawal button
+            const withdrawBtn = document.querySelector('.btn-withdraw');
+            withdrawBtn.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('.btn-icon');
+                icon.innerHTML = '<i class="fas fa-arrow-right"></i>';
+            });
+
+            withdrawBtn.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('.btn-icon');
+                icon.innerHTML = '<i class="fas fa-money-bill-wave"></i>';
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model FinancialApp.Models.Transaction
+@{
+    ViewData["Title"] = "New Withdrawal";
+}
+
+<h2>New Withdrawal</h2>
+
+<form asp-action="CreateWithdrawal" method="post">
+    <div class="form-group">
+        <label asp-for="AccountId"></label>
+        <select asp-for="AccountId" class="form-control" asp-items="ViewBag.AccountId"></select>
+        <span asp-validation-for="AccountId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+            <option value="">-- None --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-warning">Withdraw</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+ *@
